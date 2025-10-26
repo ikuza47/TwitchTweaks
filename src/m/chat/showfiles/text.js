@@ -73,7 +73,6 @@
     textContainer.style.padding = '12px';
     textContainer.style.whiteSpace = 'pre-wrap';
     textContainer.style.wordBreak = 'break-word';
-    // ✅ Вставляем текст как plain text, чтобы не интерпретировать HTML/ссылки
     textContainer.textContent = content;
 
     // Кнопки
@@ -85,7 +84,7 @@
     buttonContainer.style.background = '#2a2a2e';
 
     const copyBtn = document.createElement('button');
-    copyBtn.textContent = 'Copy';
+    copyBtn.textContent = 'Скопировать';
     copyBtn.style.flex = '1';
     copyBtn.style.padding = '6px 12px';
     copyBtn.style.border = 'none';
@@ -97,13 +96,13 @@
     copyBtn.addEventListener('click', () => {
       navigator.clipboard.writeText(content).then(() => {
         const oldText = copyBtn.textContent;
-        copyBtn.textContent = 'Copied!';
+        copyBtn.textContent = 'Скопировано!';
         setTimeout(() => copyBtn.textContent = oldText, 2000);
       });
     });
 
     const openBtn = document.createElement('button');
-    openBtn.textContent = 'Open';
+    openBtn.textContent = 'Открыть';
     openBtn.style.flex = '1';
     openBtn.style.padding = '6px 12px';
     openBtn.style.border = 'none';
@@ -118,7 +117,6 @@
 
     buttonContainer.appendChild(copyBtn);
     buttonContainer.appendChild(openBtn);
-
     container.appendChild(textContainer);
     container.appendChild(buttonContainer);
 
@@ -160,6 +158,18 @@
   }
 
   async function processNewMessages(mutations) {
+    // ✅ Получаем настройки из хранилища
+    const settings = await new Promise(resolve => {
+      chrome.storage.sync.get(['textLocation'], result => {
+        resolve(result);
+      });
+    });
+
+    // ✅ Работаем только если textLocation === 'chat'
+    if (settings.textLocation !== 'chat') {
+      return;
+    }
+
     for (const mut of mutations) {
       if (mut.type !== 'childList') continue;
 
@@ -178,6 +188,14 @@
   observer.observe(document.body, { childList: true, subtree: true });
 
   setTimeout(async () => {
+    const settings = await new Promise(resolve => {
+      chrome.storage.sync.get(['textLocation'], result => {
+        resolve(result);
+      });
+    });
+
+    if (settings.textLocation !== 'chat') return;
+
     const existingLinks = document.querySelectorAll('a[href]') || [];
     for (const link of existingLinks) {
       await replaceLinkWithText(link);

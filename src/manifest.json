@@ -2,8 +2,24 @@
   "manifest_version": 3,
   "name": "TwitchTweaks",
   "version": "1.1",
-  "description": "TwitchTweaks - Better Twitch!",
-  "permissions": ["clipboardWrite"],
+  "description": "Enhance your Twitch experience with file uploading, osu! map panels, image previews, and more.",
+  "permissions": ["storage", "clipboardWrite"],
+  "icons": {
+    "16": "icon.png",
+    "32": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "action": {
+    "default_title": "Open TwitchTweaks Settings"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "options_ui": {
+    "page": "s/options.html",
+    "open_in_tab": true
+  },
   "content_scripts": [
     {
       "matches": ["https://*.twitch.tv/*"],
@@ -11,7 +27,10 @@
         "m/upload/upload.js",
         "m/panel/osu/map.js",
         "m/chat/showfiles/images.js",
-        "m/chat/showfiles/text.js"
+        "m/chat/showfiles/text.js",
+        "m/panel/showfiles/images.js",
+        "m/panel/showfiles/text.js",
+        "m/ext/update.js"
       ]
     }
   ]

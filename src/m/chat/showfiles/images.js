@@ -41,20 +41,49 @@
     }
   }
 
+  function checkIfMedia(url) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = url;
+
+      img.onload = () => resolve({ isMedia: true, type: 'image' });
+      img.onerror = () => {
+        const video = document.createElement('video');
+        video.preload = 'metadata';
+        video.src = url;
+
+        video.onloadedmetadata = () => resolve({ isMedia: true, type: 'video' });
+        video.onerror = () => resolve({ isMedia: false, type: 'other' });
+      };
+    });
+  }
+
   async function replaceLinkWithMedia(link) {
     const url = link.href;
-
-    // ✅ Проверяем, находится ли ссылка внутри уведомления upload.js
-    if (link.closest('#twitchtweaks-notification')) {
-      return;
-    }
 
     if (link.dataset.mediaProcessed) return;
     link.dataset.mediaProcessed = 'true';
 
-    if (!isMediaUrl(url)) return;
+    let mediaType = null;
 
-    const mediaType = VIDEO_EXTS.test(new URL(url).pathname) ? 'video' : 'image';
+    if (imageCache[url]) {
+      if (imageCache[url].type === 'other') return;
+      mediaType = imageCache[url].type;
+    } else {
+      if (isMediaUrl(url)) {
+        mediaType = VIDEO_EXTS.test(new URL(url).pathname) ? 'video' : 'image';
+      } else {
+        const result = await checkIfMedia(url);
+        if (!result.isMedia) {
+          imageCache[url] = { type: 'other' };
+          saveCache(imageCache);
+          return;
+        }
+        mediaType = result.type;
+      }
+      imageCache[url] = { type: mediaType };
+      saveCache(imageCache);
+    }
 
     const parent = link.parentElement;
     if (!parent) return;
@@ -84,6 +113,18 @@
   }
 
   async function processNewMessages(mutations) {
+    // ✅ Получаем настройки из хранилища
+    const settings = await new Promise(resolve => {
+      chrome.storage.sync.get(['imageLocation'], result => {
+        resolve(result);
+      });
+    });
+
+    // ✅ Работаем только если imageLocation === 'chat'
+    if (settings.imageLocation !== 'chat') {
+      return;
+    }
+
     for (const mut of mutations) {
       if (mut.type !== 'childList') continue;
 

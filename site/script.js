@@ -61,8 +61,44 @@ document.querySelectorAll('.tab-button').forEach(button => {
     });
 });
 
-// Пример добавления эффекта при загрузке
-document.addEventListener('DOMContentLoaded', () => {
+// Функция для получения URL последнего релиза
+async function fetchLatestReleaseUrl() {
+    const apiUrl = 'https://api.github.com/repos/ikuza47/TwitchTweaks/releases/latest';
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`GitHub API error: ${response.status}`);
+        }
+        const releaseData = await response.json();
+        // Находим asset с именем "TwitchTweaks.zip"
+        const zipAsset = releaseData.assets.find(asset => asset.name === 'TwitchTweaks.zip');
+        if (zipAsset && zipAsset.browser_download_url) {
+            return zipAsset.browser_download_url;
+        } else {
+            console.warn('TwitchTweaks.zip asset not found in the latest release.');
+            return null;
+        }
+    } catch (error) {
+        console.error('Error fetching latest release URL:', error);
+        return null;
+    }
+}
+
+// Обновляем href кнопки "Download from Site" при загрузке страницы
+document.addEventListener('DOMContentLoaded', async () => {
     console.log('TwitchTweaks page loaded with new dark theme, animations, and tabs.');
     // Анимация для элементов героя уже задана через CSS
+
+    const downloadButton = document.querySelector('.download-button.primary');
+    if (downloadButton) {
+        const latestUrl = await fetchLatestReleaseUrl();
+        if (latestUrl) {
+            downloadButton.href = latestUrl;
+            console.log('Download button URL updated to:', latestUrl);
+        } else {
+            console.warn('Could not update download button URL.');
+            // Оставляем URL по умолчанию или показываем ошибку пользователю
+            // downloadButton.href = '#'; // или другой fallback
+        }
+    }
 });

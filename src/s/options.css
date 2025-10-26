@@ -1,0 +1,556 @@
+:root {
+  /* Обновлённый основной цвет фона */
+  --tt-bg-primary: #121212;
+  /* Адаптированные цвета для нового фона */
+  --tt-bg-secondary: #1e1e1e;
+  --tt-bg-input: #2d2d2d;
+  --tt-border: #404040;
+  --tt-text-primary: #e0e0e0;
+  --tt-text-secondary: #a0a0a0;
+  --tt-accent: #FF6B35;
+  --tt-accent-hover: #e55a2b;
+  --tt-accent-focus: rgba(255, 107, 53, 0.3);
+  --tt-success: #4caf50;
+  --tt-warning: #ff9800;
+  --tt-error: #f44336;
+
+  /* Тени */
+  --tt-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --tt-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px -1px rgba(0, 0, 0, 0.3);
+  --tt-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --tt-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+  --tt-shadow-glow: 0 0 0 4px var(--tt-accent-focus);
+  --tt-shadow-glow-pulse: 0 0 0 4px rgba(255, 107, 53, 0.1);
+
+  /* Отступы */
+  --tt-space-1: 0.25rem;
+  --tt-space-2: 0.5rem;
+  --tt-space-3: 0.75rem;
+  --tt-space-4: 1rem;
+  --tt-space-5: 1.25rem;
+  --tt-space-6: 1.5rem;
+  --tt-space-8: 2rem;
+  --tt-space-10: 2.5rem;
+  --tt-space-12: 3rem;
+
+  /* Радиусы скругления */
+  --tt-radius-sm: 0.125rem;
+  --tt-radius-base: 0.25rem;
+  --tt-radius-md: 0.375rem;
+  --tt-radius-lg: 0.5rem;
+  --tt-radius-xl: 0.75rem;
+  --tt-radius-full: 9999px;
+
+  /* Шрифты */
+  --tt-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --tt-font-size-xs: 0.75rem;
+  --tt-font-size-sm: 0.875rem;
+  --tt-font-size-base: 1rem;
+  --tt-font-size-lg: 1.125rem;
+  --tt-font-size-xl: 1.25rem;
+  --tt-font-size-2xl: 1.5rem;
+  --tt-font-size-3xl: 1.875rem;
+  --tt-font-size-4xl: 2.25rem;
+
+  /* УСКОРЕННЫЕ Переходы */
+  --tt-transition-fast: 100ms cubic-bezier(0.4, 0, 0.2, 1);
+  --tt-transition-normal: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --tt-transition-bounce: 0.4s cubic-bezier(0.5, 0.05, 0.2, 1.5);
+}
+
+/* Reset & Base */
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--tt-font-family);
+  background-color: var(--tt-bg-primary);
+  color: var(--tt-text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  scroll-behavior: smooth;
+}
+
+/* Wrapper */
+.tt-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 10% 20%, rgba(255, 107, 53, 0.05) 0%, transparent 20%),
+    radial-gradient(circle at 90% 80%, rgba(255, 107, 53, 0.03) 0%, transparent 20%),
+    var(--tt-bg-primary);
+  animation: subtlePulse 10s infinite alternate;
+  position: relative; /* Для позиционирования meme */
+}
+
+@keyframes subtlePulse {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 2% 2%; }
+}
+
+/* Container */
+.tt-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--tt-space-4);
+}
+
+/* Header */
+.tt-header {
+  background-color: var(--tt-bg-secondary);
+  border-bottom: 1px solid var(--tt-border);
+  padding: var(--tt-space-6) 0;
+  box-shadow: var(--tt-shadow);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  opacity: 0;
+  animation: fadeInDown 0.5s forwards;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.tt-header-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.tt-header-title {
+  margin: 0;
+  font-size: var(--tt-font-size-3xl);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--tt-text-primary);
+  transition: text-shadow var(--tt-transition-normal);
+}
+
+.tt-header-title:hover {
+  text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+}
+
+.tt-header-title-accent {
+  color: var(--tt-accent);
+  animation: colorPulse 2s infinite;
+}
+
+@keyframes colorPulse {
+  0% { color: var(--tt-accent); }
+  50% { color: #ff9e7d; }
+  100% { color: var(--tt-accent); }
+}
+
+.tt-header-subtitle {
+  margin: var(--tt-space-2) 0 0;
+  font-size: var(--tt-font-size-base);
+  color: var(--tt-text-secondary);
+  opacity: 0;
+  animation: fadeIn 0.5s 0.3s forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+/* Main Content */
+.tt-main {
+  flex: 1;
+  padding: var(--tt-space-8) 0;
+  opacity: 0;
+  animation: fadeIn 0.5s 0.5s forwards;
+}
+
+/* Settings Grid */
+.tt-settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--tt-space-6);
+}
+
+/* Cards */
+.tt-card {
+  background-color: var(--tt-bg-secondary);
+  border: 1px solid var(--tt-border);
+  border-radius: var(--tt-radius-lg);
+  box-shadow: var(--tt-shadow);
+  overflow: hidden;
+  transition: transform var(--tt-transition-fast), box-shadow var(--tt-transition-fast), border-color var(--tt-transition-fast);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: cardAppear 0.4s forwards;
+}
+
+@keyframes cardAppear {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tt-card:nth-child(1) { animation-delay: 0.7s; }
+.tt-card:nth-child(2) { animation-delay: 0.9s; }
+.tt-card:nth-child(3) { animation-delay: 1.1s; }
+
+.tt-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--tt-shadow-md);
+  border-color: var(--tt-accent);
+}
+
+.tt-card:focus-within {
+  box-shadow: var(--tt-shadow-glow-pulse);
+  outline: none;
+}
+
+.tt-card-header {
+  padding: var(--tt-space-4) var(--tt-space-5);
+  border-bottom: 1px solid var(--tt-border);
+  background-color: rgba(255, 107, 53, 0.05);
+  position: relative;
+}
+
+.tt-card-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--tt-accent), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--tt-transition-normal);
+}
+
+.tt-card:hover .tt-card-header::before {
+  transform: scaleX(1);
+}
+
+.tt-card-title {
+  margin: 0;
+  font-size: var(--tt-font-size-xl);
+  font-weight: 700;
+  color: var(--tt-accent);
+  transition: color var(--tt-transition-fast);
+}
+
+.tt-card:hover .tt-card-title {
+  color: #ff9e7d;
+}
+
+.tt-card-body {
+  padding: var(--tt-space-5);
+}
+
+/* Controls */
+.tt-control-group {
+  margin-bottom: var(--tt-space-5);
+  transition: transform var(--tt-transition-fast);
+}
+
+.tt-control-group:last-child {
+  margin-bottom: 0;
+}
+
+.tt-control-group:hover {
+  transform: translateX(5px);
+}
+
+/* Labels */
+.tt-label {
+  display: block;
+  margin-bottom: var(--tt-space-2);
+  font-weight: 600;
+  font-size: var(--tt-font-size-sm);
+  color: var(--tt-text-primary);
+  transition: color var(--tt-transition-fast);
+}
+
+.tt-label:hover {
+  color: var(--tt-accent);
+}
+
+/* Toggle/Switch */
+.tt-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.tt-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.tt-toggle-track {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 24px;
+  background-color: var(--tt-border);
+  border-radius: var(--tt-radius-full);
+  /* УСКОРЕННЫЙ переход */
+  transition: background-color var(--tt-transition-fast);
+  flex-shrink: 0;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.tt-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: white;
+  /* УСКОРЕННЫЙ переход */
+  transition: transform var(--tt-transition-fast);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.tt-toggle input:checked + .tt-toggle-track {
+  background-color: var(--tt-accent);
+}
+
+.tt-toggle input:checked + .tt-toggle-track .tt-toggle-thumb {
+  /* УСКОРЕННАЯ анимация "пружинки" */
+  transform: translateX(18px) scale(1.1);
+  background-color: white;
+  transition: transform var(--tt-transition-bounce); /* Используем bounce для клика */
+}
+
+/* Анимация при нажатии */
+.tt-toggle input:active + .tt-toggle-track .tt-toggle-thumb {
+  transform: translateX(18px) scale(0.95);
+  transition: transform 50ms ease-in-out;
+}
+
+.tt-toggle input:focus + .tt-toggle-track {
+  box-shadow: var(--tt-shadow-glow);
+}
+
+.tt-toggle-label {
+  margin-left: var(--tt-space-3);
+  font-size: var(--tt-font-size-base);
+  color: var(--tt-text-primary);
+  cursor: pointer;
+  transition: color var(--tt-transition-fast);
+}
+
+.tt-toggle-label:hover {
+  color: var(--tt-accent);
+}
+
+/* Select */
+.tt-select {
+  width: 100%;
+  padding: var(--tt-space-2) var(--tt-space-3);
+  background-color: var(--tt-bg-input);
+  color: var(--tt-text-primary);
+  border: 1px solid var(--tt-border);
+  border-radius: var(--tt-radius-base);
+  font-size: var(--tt-font-size-base);
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3e%3cpath fill='%23a0a0a0' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right var(--tt-space-2) center;
+  background-size: 16px;
+  cursor: pointer;
+  /* УСКОРЕННЫЕ переходы */
+  transition: border-color var(--tt-transition-fast), box-shadow var(--tt-transition-fast), background-color var(--tt-transition-fast);
+}
+
+.tt-select:hover {
+  background-color: #383838;
+}
+
+.tt-select:focus {
+  outline: none;
+  border-color: var(--tt-accent);
+  box-shadow: var(--tt-shadow-glow);
+  background-color: #383838;
+}
+
+/* Footer */
+.tt-footer {
+  background-color: var(--tt-bg-secondary);
+  border-top: 1px solid var(--tt-border);
+  padding: var(--tt-space-4) 0;
+  margin-top: auto;
+  box-shadow: var(--tt-shadow-sm);
+  opacity: 0;
+  animation: fadeIn 0.5s 1.3s forwards;
+}
+
+.tt-footer-container {
+  display: flex;
+  justify-content: center;
+}
+
+.tt-footer-text {
+  margin: 0;
+  text-align: center;
+  font-size: var(--tt-font-size-sm);
+  color: var(--tt-text-secondary);
+}
+
+/* Meme Corner */
+.tt-meme-corner {
+  position: fixed;
+  /* Позиционирование над футером */
+  bottom: calc(var(--tt-space-4) + 10px); /* Высота паддинга футера + немного отступа */
+  right: var(--tt-space-4); /* Отступ от края */
+  z-index: 1000;
+  pointer-events: none; /* Чтобы не мешало кликам */
+  /* Анимация появления */
+  opacity: 0;
+  animation: fadeIn 0.5s 1.5s forwards;
+}
+
+.tt-meme-corner:hover {
+  /* При желании можно добавить hover-эффект, например, увеличение */
+  /* transform: scale(1.1); */
+}
+
+.tt-meme-image {
+  /* Уменьшено в 2 раза */
+  width: 50px;
+  height: auto;
+  /* Убрана обводка */
+  box-shadow: none;
+  /* Стиль "на полке" */
+  border-radius: var(--tt-radius-sm);
+  /* Плавное появление */
+  transition: opacity var(--tt-transition-normal);
+  opacity: 0.8; /* Лёгкая прозрачность по умолчанию */
+}
+
+.tt-meme-corner:hover .tt-meme-image {
+  opacity: 1; /* Непрозрачно при наведении */
+}
+
+/* Focus Styles for Accessibility */
+.tt-toggle:focus-within,
+.tt-select:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+/* Pulse Animation Helper Class */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.pulse {
+  animation: pulse 0.5s ease-in-out;
+}
+
+/* Responsive */
+@media (min-width: 640px) {
+  .tt-header { padding: var(--tt-space-8) 0; }
+  .tt-main { padding: var(--tt-space-10) 0; }
+  .tt-settings-grid { gap: var(--tt-space-8); }
+}
+
+/* === Кнопки === */
+
+.tt-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--tt-space-2) var(--tt-space-3);
+  border: 1px solid var(--tt-border);
+  border-radius: var(--tt-radius-base);
+  font-size: var(--tt-font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--tt-transition-fast);
+  text-align: center;
+  text-decoration: none; /* Для ссылок */
+  box-sizing: border-box;
+  width: 100%; /* По умолчанию ширина 100% для блочных кнопок */
+}
+
+/* Стиль активной (основной) кнопки */
+.tt-button-primary {
+  background-color: var(--tt-accent);
+  border-color: var(--tt-accent);
+  color: white;
+}
+
+.tt-button-primary:hover:not(:disabled) {
+  background-color: var(--tt-accent-hover);
+  border-color: var(--tt-accent-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--tt-shadow-glow);
+}
+
+.tt-button-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Стиль неактивной кнопки */
+.tt-button-disabled,
+.tt-button:disabled {
+  background-color: var(--tt-bg-input);
+  border-color: var(--tt-border);
+  color: var(--tt-text-secondary);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.tt-button-disabled:hover,
+.tt-button:disabled:hover {
+  background-color: var(--tt-bg-input);
+  border-color: var(--tt-border);
+  transform: none;
+  box-shadow: none;
+}
+
+/* Стиль для кнопки-ссылки (если нужно) */
+.tt-button-link {
+  background: none;
+  border: none;
+  color: var(--tt-accent);
+  text-decoration: underline;
+  width: auto;
+  padding: 0;
+}
+
+.tt-button-link:hover {
+  color: var(--tt-accent-hover);
+  text-decoration: none;
+}
+
+/* Стиль для кнопки внутри группы (если нужно) */
+.tt-control-group .tt-button {
+  margin-top: var(--tt-space-2);
+}
+
+
+/* === Статус обновления === */
+
+.tt-update-status {
+  font-size: var(--tt-font-size-xs);
+  color: var(--tt-text-secondary);
+  min-height: 1.2em; /* Чтобы не прыгало при изменении текста */
+  transition: color var(--tt-transition-fast);
+}
