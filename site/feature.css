@@ -1,0 +1,125 @@
+/* feature.css */
+
+/* Секция фич */
+.features {
+  margin-bottom: 8rem;
+}
+
+.features h2 {
+  font-size: 2.8rem;
+  text-align: center;
+  margin-bottom: 4rem;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.8s ease-out forwards 0.8s;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2.5rem;
+}
+
+.feature-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden; /* Обрезаем всё, что выходит за границы карточки */
+  transition: var(--transition);
+  opacity: 0;
+  transform: translateY(30px);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Карточки одной высоты */
+  position: relative; /* Для позиционирования псевдоэлемента */
+  z-index: 1; /* Устанавливаем z-index для наложения псевдоэлемента */
+}
+
+/* Псевдоэлемент для градиентного акцента */
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px; /* Высота акцентной полосы */
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  transform: scaleX(0); /* Изначально скрыт */
+  transform-origin: left; /* Точка отсчёта анимации */
+  transition: transform 0.4s ease;
+  z-index: 2; /* Над содержимым, но под наведённым состоянием */
+}
+
+.feature-card.reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Анимация акцентной полосы при наведении */
+.feature-card:hover::before {
+  transform: scaleX(1); /* Разворачиваем полосу */
+}
+
+.feature-card:hover {
+  box-shadow: 0 15px 40px -10px rgba(220, 103, 60, 0.25); /* Более сильная тень при наведении */
+  transform: translateY(-8px); /* Поднимаем карточку при наведении */
+}
+
+/* Изменяем .feature-info: убираем padding и border-top */
+.feature-info {
+  padding: 1.5rem; /* padding остаётся у .feature-info */
+  flex-grow: 1; /* Текст занимает оставшееся место */
+  display: flex;
+  flex-direction: column;
+  position: relative; /* Для позиционирования иконки */
+  z-index: 2; /* Над псевдоэлементом */
+  /* border-top: 1px solid var(--border); УДАЛЁН, так как изображение теперь внизу */
+}
+
+.feature-card h3 {
+  font-size: 1.6rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* Пространство между иконкой и текстом */
+}
+
+.feature-card p {
+  color: var(--muted);
+  margin: 0;
+  flex-grow: 1; /* Параграф растягивается */
+}
+
+/* Изменяем .feature-image: добавляем border-top */
+.feature-image {
+  width: 100%;
+  position: relative;
+  /* overflow: hidden; УДАЛЁН, чтобы изображение не обрезалось */
+  border-top: 1px solid var(--border); /* ПЕРЕМЕЩАЕМ border СЮДА */
+  transition: var(--transition);
+  /* Устанавливаем начальное состояние размытия */
+  filter: blur(2px); /* УБРАЛ РАЗМЫТИЕ С 4px до 2px */
+  transition: filter 0.4s ease; /* Плавный переход размытия */
+}
+
+.feature-card:hover .feature-image {
+  /* Убираем затемнение, добавляем размытие при hover */
+  filter: blur(0px); /* Убираем размытие при наведении */
+}
+
+.feature-image img {
+  position: relative; /* position: absolute УДАЛЁН */
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* height: 100%; УДАЛЁН */
+  object-fit: contain; /* Изображение вмещается целиком, не обрезается */
+  transition: var(--transition);
+}
+
+/* feature-card:hover .feature-image img - только увеличение при hover */
+.feature-card:hover .feature-image img {
+  transform: scale(1.02); /* Лёгкое увеличение изображения при наведении */
+}

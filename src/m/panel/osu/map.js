@@ -14,7 +14,6 @@
   let currentLink = null;
   let hideTimeout = null;
 
-  // ✅ Храним позицию панели
   let lastPanelPosition = null;
 
   function closePanel() {
@@ -32,11 +31,9 @@
     hideTimeout = setTimeout(closePanel, 500);
   }
 
-  // ✅ Новая функция интерполяции цвета по звёздам
   function getStarColor(stars) {
-    if (isNaN(stars)) return '#a9a9b3'; // серый, если не число
+    if (isNaN(stars)) return '#a9a9b3';
 
-    // Таблица точек для интерполяции
     const points = [
       { s: 0.0, c: [0x4e, 0xff, 0x00] }, // #4eff00 (ярко-зелёный)
       { s: 2.0, c: [0xa3, 0xff, 0x00] }, // #a3ff00 (салатовый)
@@ -54,12 +51,10 @@
       return `rgb(${first.c[0]}, ${first.c[1]}, ${first.c[2]})`;
     }
 
-    // Если больше 8.0 — возвращаем чёрный
     if (stars >= 8.0) {
       return 'rgb(0, 0, 0)';
     }
 
-    // Находим нужный диапазон
     for (let i = 0; i < points.length - 1; i++) {
       if (stars >= points[i].s && stars < points[i + 1].s) {
         const p1 = points[i];
@@ -72,7 +67,6 @@
       }
     }
 
-    // На случай, если числа между точками не попали (не должно сработать)
     const last = points[points.length - 1];
     return `rgb(${last.c[0]}, ${last.c[1]}, ${last.c[2]})`;
   }
@@ -121,7 +115,6 @@
     });
     panel.appendChild(closeBtn);
 
-    // ✅ Перемещение панели
     let isDragging = false;
     let offsetX, offsetY;
 
@@ -201,7 +194,6 @@
     const content = document.createElement('div');
     content.style.padding = '8px';
 
-    // ✅ Difficulty name (with stars) + status + pp
     const meta = metaData.difficulty || {};
     const stars = typeof meta.stars === 'number' ? meta.stars.toFixed(2) : '?';
     const pp95 = metaData.pp?.['95']?.pp ? Math.floor(metaData.pp['95'].pp) : '?';
@@ -209,7 +201,6 @@
     const diffName = document.createElement('div');
     diffName.style.fontWeight = 'bold';
     diffName.style.margin = '4px 0';
-    // ✅ Цвет сложности и звёзд — интерполируется по новой таблице
     const starColor = getStarColor(meta.stars);
     diffName.style.color = starColor;
     diffName.style.display = 'flex';
@@ -260,7 +251,6 @@
       const row = statsTable.insertRow();
       const cell1 = row.insertCell(0);
       const cell2 = row.insertCell(1);
-      // ✅ Округление до 1 знака
       const val1 = typeof value1 === 'number' ? value1.toFixed(1) : value1;
       const val2 = typeof value2 === 'number' ? value2.toFixed(1) : value2;
       cell1.innerHTML = `<span style="color:${color1}">${label1}: ${val1}</span>`;
@@ -288,7 +278,6 @@
 
     content.appendChild(statsTable);
 
-    // ✅ Download button (moved under table)
     const beatmapsetId = v2Data.beatmapset_id;
     if (beatmapsetId) {
       const downloadBtn = document.createElement('a');
@@ -305,13 +294,12 @@
       downloadBtn.style.borderRadius = '4px';
       downloadBtn.style.fontSize = '11px';
       downloadBtn.style.fontWeight = '600';
-      downloadBtn.textContent = 'Скачать';
+      downloadBtn.textContent = 'Download';
       content.appendChild(downloadBtn);
     }
 
     panel.appendChild(content);
 
-    // ✅ Позиционируем и корректируем, если выходит за границы
     document.body.appendChild(panel);
     currentPanel = panel;
 
@@ -347,7 +335,6 @@
       console.log('[TwitchTweaks] Saved initial panel position:', lastPanelPosition);
     }
 
-    // Hover logic
     let isOverPanelOrLink = false;
 
     const updateVisibility = () => {
@@ -475,7 +462,6 @@
 
   document.addEventListener('mouseover', handleMouseEnter, true);
 
-  // ✅ Сброс позиции при перезагрузке
   window.addEventListener('beforeunload', () => {
     console.log('[TwitchTweaks] Page unloading, resetting panel position');
     lastPanelPosition = null;

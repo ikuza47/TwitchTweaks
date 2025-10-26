@@ -115,7 +115,7 @@
     const closeBtn = document.createElement('button');
     closeBtn.className = 'close-btn';
     closeBtn.innerHTML = '×';
-    closeBtn.setAttribute('aria-label', 'Закрыть');
+    closeBtn.setAttribute('aria-label', 'Close');
     el.appendChild(closeBtn);
 
     const contentDiv = document.createElement('div');
@@ -222,7 +222,7 @@
         });
 
         if (res.status === 500 && attempt < maxRetries) {
-          lastError = new Error(`HTTP 500 (попытка ${attempt + 1}/${maxRetries + 1})`);
+          lastError = new Error(`HTTP 500 (try ${attempt + 1}/${maxRetries + 1})`);
           const delay = 100 * Math.pow(2, attempt);
           await new Promise(r => setTimeout(r, delay));
           continue;
@@ -249,7 +249,7 @@
       }
     }
 
-    throw lastError || new Error('Неизвестная ошибка');
+    throw lastError || new Error('Error ?');
   }
 
   async function uploadFile(file) {
@@ -269,7 +269,7 @@
           const snippet = text.length > 500 ? text.substring(0, 500) + '…' : text;
           previewHtml = `<pre>${escapeHtml(snippet)}</pre>`;
         } catch (e) {
-          previewHtml = '<em>Не удалось прочитать текст</em>';
+          previewHtml = '<em>Cant read file</em>';
         }
       }
 
@@ -283,7 +283,7 @@
       showNotification(content);
     } catch (err) {
       showNotification(`
-        <div class="status error">❌ Ошибка загрузки</div>
+        <div class="status error">❌ Error load</div>
         <div>${escapeHtml(err.message)}</div>
       `);
     }

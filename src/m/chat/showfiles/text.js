@@ -53,13 +53,12 @@
 
   function createTextBlock(content, originalUrl) {
     const container = document.createElement('div');
-    container.style.position = 'relative';
     container.style.width = '100%';
-    container.style.maxWidth = '600px'; // Ограничиваем ширину
-    container.style.aspectRatio = '1'; // ✅ Квадратное соотношение 1:1
+    container.style.maxWidth = '600px';
+    container.style.aspectRatio = '1'; // Квадратное соотношение 1:1
     container.style.border = '1px solid #3f3f46';
     container.style.borderRadius = '4px';
-    container.style.overflow = 'hidden'; // Обрезаем, если что-то выходит
+    container.style.overflow = 'hidden';
     container.style.background = '#18181b';
     container.style.color = '#efeff1';
     container.style.fontFamily = 'monospace, monospace';
@@ -74,6 +73,7 @@
     textContainer.style.padding = '12px';
     textContainer.style.whiteSpace = 'pre-wrap';
     textContainer.style.wordBreak = 'break-word';
+    // ✅ Вставляем текст как plain text, чтобы не интерпретировать HTML/ссылки
     textContainer.textContent = content;
 
     // Кнопки
@@ -85,7 +85,7 @@
     buttonContainer.style.background = '#2a2a2e';
 
     const copyBtn = document.createElement('button');
-    copyBtn.textContent = 'Скопировать';
+    copyBtn.textContent = 'Copy';
     copyBtn.style.flex = '1';
     copyBtn.style.padding = '6px 12px';
     copyBtn.style.border = 'none';
@@ -97,13 +97,13 @@
     copyBtn.addEventListener('click', () => {
       navigator.clipboard.writeText(content).then(() => {
         const oldText = copyBtn.textContent;
-        copyBtn.textContent = 'Скопировано!';
+        copyBtn.textContent = 'Copied!';
         setTimeout(() => copyBtn.textContent = oldText, 2000);
       });
     });
 
     const openBtn = document.createElement('button');
-    openBtn.textContent = 'Открыть';
+    openBtn.textContent = 'Open';
     openBtn.style.flex = '1';
     openBtn.style.padding = '6px 12px';
     openBtn.style.border = 'none';
@@ -127,6 +127,11 @@
 
   async function replaceLinkWithText(link) {
     const url = link.href;
+
+    // ✅ Проверяем, находится ли ссылка внутри уведомления upload.js
+    if (link.closest('#twitchtweaks-notification')) {
+      return;
+    }
 
     if (link.dataset.textProcessed) return;
     link.dataset.textProcessed = 'true';

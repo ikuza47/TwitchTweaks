@@ -1,0 +1,25 @@
+/* footer.css */
+
+/* Футер */
+footer {
+  padding: 3rem 2rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  color: var(--muted);
+  background: rgba(30, 30, 30, 0.5);
+  backdrop-filter: blur(5px);
+}
+
+footer p {
+  font-size: 0.95rem;
+}
+
+footer a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
